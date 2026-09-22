@@ -3,8 +3,12 @@ using UnityEngine;
 
 public class Room2PuzzleManager : MonoBehaviour
 {
+    [Header("Puzzle")]
     public DoorController finalDoor;
     public int totalObjects = 3;
+
+    [Header("Timer")]
+    public GameTimer gameTimer;
 
     [Header("Sounds")]
     public AudioClip victoryClip;
@@ -41,35 +45,42 @@ public class Room2PuzzleManager : MonoBehaviour
 
         placedObjects++;
 
+        Debug.Log("Objects placed: " + placedObjects + "/" + totalObjects);
+
         if (placedObjects >= totalObjects)
         {
             solved = true;
 
-            // Victory sound
+            // STOP TIMER
+            if (gameTimer != null)
+                gameTimer.StopTimer();
+
+            // VICTORY SOUND
             if (victoryClip != null)
             {
                 victorySource.clip = victoryClip;
                 victorySource.Play();
             }
 
-            // Ανοίγει η τελική πόρτα
+            // OPEN FINAL DOOR
             if (finalDoor != null)
                 finalDoor.OpenDoor();
 
-            // Ξεκινάει η θάλασσα
+            // SEA SOUND
             if (seaClip != null)
             {
                 seaSource.clip = seaClip;
                 seaSource.Play();
             }
 
+            // SHOW END SCREEN AFTER DELAY
             StartCoroutine(ShowEndAfterDelay());
         }
     }
 
     private IEnumerator ShowEndAfterDelay()
     {
-        yield return new WaitForSeconds(15f);
+        yield return new WaitForSeconds(20f);
 
         if (endCanvas != null)
             endCanvas.SetActive(true);
