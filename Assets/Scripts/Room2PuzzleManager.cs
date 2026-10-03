@@ -15,6 +15,7 @@ public class Room2PuzzleManager : MonoBehaviour
     public AudioClip seaClip;
 
     [Header("End")]
+    public MenuManager menuManager;
     public GameObject endCanvas;
 
     private int placedObjects = 0;
@@ -32,7 +33,7 @@ public class Room2PuzzleManager : MonoBehaviour
 
         seaSource.playOnAwake = false;
         seaSource.loop = true;
-        seaSource.volume = 0.25f;
+        seaSource.volume = 0.20f;
 
         if (endCanvas != null)
             endCanvas.SetActive(false);
@@ -80,7 +81,13 @@ public class Room2PuzzleManager : MonoBehaviour
 
     private IEnumerator ShowEndAfterDelay()
     {
-        yield return new WaitForSeconds(20f);
+        yield return new WaitForSeconds(15f);
+
+        if (menuManager != null)
+        {
+            menuManager.ShowEndScreen();
+            yield break;
+        }
 
         if (endCanvas != null)
             endCanvas.SetActive(true);
